@@ -2,8 +2,24 @@
 
     <h1>@ViewBag.title</h1>
 
+    <h3>@ViewBag.jobs.Count Result(s)</h3>
+
     @{
         //TODO #1: Use a loop to display job results in a table.
+        //TODO #3: Use the same lit display from Views/Search?Index.cshtml
+
+        @foreach (var job in ViewBag.jobs)
+            {
+                <table class="job-listing">
+                    @foreach (var q in job)
+                {
+                    <tr>
+                        <th>@char.ToUpper(q.Key.Substring(1)</th>
+                        <td>@q.Value</td>
+                    </tr>
+                }
+                </table>
+            }
     }
 
 
