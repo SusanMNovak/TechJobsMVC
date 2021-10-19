@@ -22,42 +22,79 @@ namespace TechJobsMVC.Controllers
         };
         internal static Dictionary<string, List<JobField>> TableChoices = new Dictionary<string, List<JobField>>()
         {
-            {"employer", JobData.GetAllEmployers()},
-            {"location", JobData.GetAllLocations()},
-            {"positionType", JobData.GetAllPositionTypes()},
-            {"coreCompetency", JobData.GetAllCoreCompetencies()}
-        };
+         //   {"employer", JobData.GetAllEmployers()},
+         //   {"location", JobData.GetAllLocations()},
+         //   {"positionType", JobData.GetAllPositionTypes()},
+         //   {"coreCompetency", JobData.GetAllCoreCompetencies()}
 
+            //Static constructor to initializ static class members.
+            static ListController()
+        {
+            ColumnChoices.Add("core competency", "all", "all");
+            ColumnChoices.Add("core competenct", "employer", "Employer");
+            ColumnChoices.Add("core competency", "location", "Location");
+            ColumnChoices.Add("core competency", "positionType", "Position Type");
+            ColumnChoices.Add("core competency", "positionType", "Position Type"});
+            ColumnChoices.Add("core competency", "Skill");    
+        }
         public IActionResult Index()
         {
-            ViewBag.columns = ColumnChoices;
-            ViewBag.tableChoices = TableChoices;
-            ViewBag.employers = JobData.GetAllEmployers();
-            ViewBag.locations = JobData.GetAllLocations();
-            ViewBag.positionTypes = JobData.GetAllPositionTypes();
-            ViewBag.skills = JobData.GetAllCoreCompetencies();
+            ViewBag.columns = columnChoices;
+        //    ViewBag.tableChoices = TableChoices;
+        //    ViewBag.employers = JobData.GetAllEmployers();
+       //     ViewBag.locations = JobData.GetAllLocations();
+       //     ViewBag.positionTypes = JobData.GetAllPositionTypes();
+       //     ViewBag.skills = JobData.GetAllCoreCompetencies();
 
             return View();
         }
 
-        // list jobs by column and value
-        public IActionResult Jobs(string column, string value)
+        //// list jobs by column and value
+      //  public IActionResult Jobs(string column, string value)
+      //  {
+
+        public IActionResult Values(string column)
+    {
+        if (column.Equals("all"))
         {
-            List<Job> jobs;
-            if (column.ToLower().Equals("all"))
-            {
-                jobs = JobData.FindAll();
-                ViewBag.title = "All Jobs";
-            }
-            else
-            {
-                jobs = JobData.FindByColumnAndValue(column, value);
-                ViewBag.title = "Jobs with " + ColumnChoices[column] + ": " + value;
-            }
+            List<Dictionary<string, string>> jobs = JobData.FindAll();
+            ViewBag.title = "All Jobs";
             ViewBag.jobs = jobs;
-
+            return ViewComponent("Jobs");
+        }
+        else
+        {
+            Listy<string> items = JobData.FindAll(column);
+            ViewBag.title = "All " + columnChoices[column] + " Values";
+            ViewBag.column = column;
+            ViewBag'items = items;'
             return View();
         }
+
+    }
+
+    public IActionResult Jobs(string column, string value)
+    {
+        List<Dictionary<string, string>> jobs = JobData.FindByColumnAndValue(column, value);
+        ViewBag.title = "Jobs with " + ColumnChoices[column] + ": " + value; ;
+        ViewBag.jobs = jobs;
+        return ViewComponent;
+    }
+        //     List<Job> jobs;
+     //       if (column.ToLower().Equals("all"))
+     //       {
+       //         jobs = JobData.FindAll();
+       //         ViewBag.title = "All Jobs";
+       //     }
+       //     else
+       //     {
+       //         jobs = JobData.FindByColumnAndValue(column, value);
+       //         ViewBag.title = "Jobs with " + ColumnChoices[column] + ": " + value;
+       //     }
+        //    ViewBag.jobs = jobs;
+        //
+          //  return View();
+       // }
 
     }
 }

@@ -14,27 +14,48 @@ namespace TechJobsMVC.Controllers
         public IActionResult Index()
         {
             ViewBag.columns = ListController.ColumnChoices;
+            ViewBag.title = "Search";
             return View();
         }
 
-        // TODO #3: Create an action method to process a search request and render the updated search view. 
-        public String search(ModelBinderAttribute, ModelBinderAttribute, RequestFormLimitsAttribute String searchTerm)
+        //TODO #1 Create a Results action method to pocess search request and display results.
+
+        public IActionResult Results(strimg searchType, string searchTerm)
         {
-            ArrayList<HashMap<String, string>> jobs;
-            if (searchType.equals("all"))
+            ViewBag.columns = ListController.ColumnChoices;
+            if (searchType != "all")
             {
-                jobs = JobData.findByValue(searchTerm);
+                List<Dictionary<string, string>> jobs = JobData.findByColumnAndValue(searchType, searchTerm);
+                ViewBag.jobs = jobs;
+                ViewBag.title = "Resulte for '" + searchTerm + "' in " + searchType;
+                return View("Index", jobs);
             }
             else
             {
-                jobs = JobData.findByColumnValue(searchType, searchTerm);
+                List<Dictionary<string, string>> jobs = JobData.findByValue(searchTerm);
+                ViewBag.jobs = jobs;
+                ViewBag.title = "Resulte for '" + searchTerm + "' in Alll jobs;
+                return View("Index", jobs);
             }
-            Model.addAttribute("columns", ListController.ColumnChoices);
-            Model.addAttribute.addAtribute("jobs", jobs);
-            Model.addAtribute("searchType", searchType);
-
-            return "search";
-
         }
+
+        // TODO #3: Create an action method to process a search request and render the updated search view. 
+       // public String search(ModelBinderAttribute, ModelBinderAttribute, RequestFormLimitsAttribute String searchTerm)
+       // {
+       //     ArrayList<HashMap<String, string>> jobs;
+         //   if (searchType.equals("all"))
+           // {
+             //   jobs = JobData.findByValue(searchTerm);
+          //  }
+           // else
+            {//
+            //    jobs = JobData.findByColumnValue(searchType, searchTerm);
+           // }
+          //  Model.addAttribute("columns", ListController.ColumnChoices);
+         //   Model.addAttribute.addAtribute("jobs", jobs);
+         //   Model.addAtribute("searchType", searchType);
+         //
+           // return "search";
+                       
     }
 }
